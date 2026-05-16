@@ -1,0 +1,37 @@
+{
+  "tournoi": {
+    "nom": "Rush Five",
+    "sousTitre": "FOOT 5v5",
+    "date": "Dimanche 13 Juillet",
+    "heure": "14:00",
+    "lieu": "Stade de St-Denis",
+    "cashprize": "1000€ + Récompenses",
+    "cashprizeDetail": "1000€ à partager",
+    "format": "Élimination directe",
+    "mode": "FOOT 5v5 (Terrain réel)",
+    "checkin": "30 min avant le début",
+    "equipe": "Par équipe (5 joueurs)",
+    "prixInscription": 5000
+  },
+  "partenaires": [
+    { "nom": "OCORNER", "url": "#" },
+    { "nom": "FOODCO", "url": "#" },
+    { "nom": "EASYGYM", "url": "#" }
+  ],
+  "recompenses": [
+    { "place": "1ère place", "montant": "600€" },
+    { "place": "2ème place", "montant": "300€" },
+    { "place": "3ème place", "montant": "100€" }
+  ],
+  "hero": {
+    "titre": "Rush Five",
+    "sousTitre": "Compétitions 3v3 · Cashprize · Communauté",
+    "ctaTexte": "Rejoins l'arène",
+    "ctaLien": "inscription.html"
+  },
+  "socials": {
+    "instagram": "#",
+    "discord": "#",
+    "twitter": "#"
+  }
+}

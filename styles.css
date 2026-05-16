@@ -1702,3 +1702,106 @@ button { font-family: inherit; }
   .game-tag { display: none; }
   .nav-menu { display: none; }
 }
+
+/* ─── MOBILE RESPONSIVE ──────────────────────────────────────────────────── */
+
+/* Hamburger nav */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: .2s;
+}
+.mobile-nav-open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.mobile-nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+.mobile-nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: 64px;
+  background: rgba(10,10,12,.97);
+  z-index: 90;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.mobile-menu a.cta {
+  background: var(--red, #ef2434);
+  padding: 14px 36px;
+  border-radius: 8px;
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  /* Show hamburger, hide regular nav */
+  .nav-hamburger { display: flex; }
+  .nav .nav-menu  { display: none !important; }
+  .nav .nav-right { display: none; }
+
+  /* Hero */
+  .hero-title   { font-size: 48px; }
+  .hero-numeric { font-size: 160px; }
+  .hero-sub     { font-size: 14px; }
+
+  /* Inscription stepper */
+  .stepper { gap: 4px; }
+  .stepper .lbl { font-size: 9px; }
+  .stepper .bar { min-width: 20px; }
+
+  /* Inscription grid → single col */
+  .ins-grid { grid-template-columns: 1fr !important; }
+  .tourney-card { display: none; }
+  .summary { display: none; }
+
+  /* Player block compact */
+  .player-block-body { grid-template-columns: 1fr 1fr !important; }
+
+  /* Confirm page ref-box */
+  .ref-box { grid-template-columns: 1fr !important; }
+
+  /* Admin panel */
+  .sidebar { display: none; }
+  .stats-grid { grid-template-columns: 1fr 1fr !important; }
+  .topbar { padding: 12px 16px; }
+  .content { padding: 16px; }
+  table thead th:nth-child(3),
+  table thead th:nth-child(6),
+  table thead th:nth-child(7),
+  table tbody td:nth-child(3),
+  table tbody td:nth-child(6),
+  table tbody td:nth-child(7) { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-title   { font-size: 38px; }
+  .hero-numeric { font-size: 120px; }
+  .stats-grid   { grid-template-columns: 1fr !important; }
+  .ins-title    { font-size: 28px; }
+  .confirm-title { font-size: 28px; }
+  .player-block-body { grid-template-columns: 1fr !important; }
+  .player-block-body .full { grid-column: 1; }
+}

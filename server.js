@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname)));
 app.use('/api/inscriptions', require('./routes/inscriptions'));
 app.use('/api/payment',      paiementRouter.router);
 app.use('/api/admin',        require('./routes/admin'));
+app.use('/api/content',     require('./routes/content'));
 
 // ─── Config publique (clé Stripe côté front) ─────────────────────────────────
 app.get('/api/config', (req, res) => {

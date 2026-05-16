@@ -23,11 +23,13 @@
     <nav class="nav-menu" aria-label="Navigation principale">
       <a href="index.html" class="active">Accueil</a>
       <a href="#tournois">Tournois</a>
-      <a href="#classements">Classements</a>
       <a href="#communaute">Communauté</a>
-      <a href="#boutique">Boutique</a>
       <a href="inscription.html" class="cta">S'inscrire</a>
     </nav>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
 
     <div class="nav-right">
       <!-- Instagram -->
@@ -50,9 +52,16 @@
           <path d="M18.244 2H21l-6.55 7.49L22 22h-6.79l-4.74-6.12L4.8 22H2l7.01-8.02L2 2h6.91l4.3 5.6L18.244 2Zm-1.19 18.31h1.77L7.06 3.6H5.16l11.894 16.71Z"/>
         </svg>
       </a>
-      <a href="#" class="login">Se connecter</a>
     </div>
   </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Accueil</a>
+    <a href="#tournois">Tournois</a>
+    <a href="#communaute">Communauté</a>
+    <a href="inscription.html" class="cta">S'inscrire</a>
+  </div>
 
   <!-- ============================================
        HERO
@@ -418,9 +427,22 @@
   </footer>
 
   <script>
-    // Simple toggle interaction on feature card 1
     document.querySelectorAll('.toggle').forEach(t => {
       t.addEventListener('click', () => t.classList.toggle('on'));
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('nav-hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      document.body.classList.toggle('mobile-nav-open', open);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        document.body.classList.remove('mobile-nav-open');
+      });
     });
   </script>
 </body>

@@ -9,45 +9,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  .player-tabs { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
-  .ptab {
-    padding:8px 16px; border-radius:6px; border:1px solid var(--border,#2a2a32);
-    background:transparent; color:#8a8a93; font-family:'Oswald',sans-serif;
-    font-size:13px; font-weight:500; cursor:pointer; transition:.2s;
+  .player-block {
+    background:#0d0d10; border:1px solid #2a2a32; border-radius:10px;
+    margin-bottom:12px; overflow:hidden;
   }
-  .ptab.active { background:#ef2434; border-color:#ef2434; color:#fff; }
-  .ptab.done   { border-color:#28d17c; color:#28d17c; }
-
-  .player-panel { display:none; }
-  .player-panel.active { display:block; }
-
-  .captain-badge {
-    display:inline-flex; align-items:center; gap:6px;
-    background:rgba(239,36,52,.12); border:1px solid rgba(239,36,52,.3);
-    color:#ef2434; font-size:11px; font-weight:600; letter-spacing:.06em;
-    padding:4px 10px; border-radius:20px; margin-bottom:18px;
-    font-family:'Oswald',sans-serif;
-  }
-  .player-panel-header {
-    display:flex; align-items:center; gap:14px; margin-bottom:20px;
-    padding-bottom:16px; border-bottom:1px solid var(--border,#2a2a32);
+  .player-block-head {
+    display:flex; align-items:center; gap:12px;
+    padding:12px 16px; border-bottom:1px solid #1e1e24;
+    background:#131316;
   }
   .player-num {
-    width:38px; height:38px; border-radius:50%;
+    width:32px; height:32px; border-radius:50%; flex-shrink:0;
     background:rgba(239,36,52,.1); border:1px solid rgba(239,36,52,.3);
     color:#ef2434; font-family:'Oswald',sans-serif;
-    font-size:16px; font-weight:700; display:grid; place-items:center; flex-shrink:0;
+    font-size:14px; font-weight:700; display:grid; place-items:center;
   }
-  .player-num.done-num { background:rgba(40,209,124,.1); border-color:rgba(40,209,124,.3); color:#28d17c; }
+  .player-num.cap-num { background:rgba(239,36,52,.18); border-color:rgba(239,36,52,.5); }
+  .player-block-title { font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; flex:1; }
+  .captain-badge {
+    display:inline-flex; align-items:center; gap:5px;
+    background:rgba(239,36,52,.12); border:1px solid rgba(239,36,52,.3);
+    color:#ef2434; font-size:10px; font-weight:600; letter-spacing:.06em;
+    padding:3px 8px; border-radius:20px; font-family:'Oswald',sans-serif;
+  }
+  .player-block-body {
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;
+    padding:14px 16px;
+  }
+  .player-block-body .full { grid-column:1/-1; }
+  @media(max-width:600px) {
+    .player-block-body { grid-template-columns:1fr 1fr; }
+  }
 
-  .field-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
   .field-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
   .field-grid-1 { margin-bottom:14px; }
-
-  .nav-steps { display:flex; gap:6px; margin-top:8px; }
-  .ns { width:24px; height:3px; border-radius:2px; background:#2a2a32; }
-  .ns.done { background:#28d17c; }
-  .ns.active { background:#ef2434; }
 </style>
 </head>
 <body>
@@ -59,9 +54,7 @@
     <nav class="nav-menu" aria-label="Navigation principale">
       <a href="index.html">Accueil</a>
       <a href="#" class="active">Tournois</a>
-      <a href="#">Classements</a>
       <a href="#">Communauté</a>
-      <a href="#">Boutique</a>
       <a href="inscription.html" class="cta">S'inscrire</a>
     </nav>
     <div class="nav-right">
@@ -74,7 +67,6 @@
       <a href="#" aria-label="Discord">
         <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09A.1.1 0 0 0 9 4c-1.5.26-2.93.71-4.27 1.33a.07.07 0 0 0-.03.03C2.07 9.33 1.33 13.21 1.69 17.03a.1.1 0 0 0 .04.07c1.8 1.32 3.54 2.12 5.25 2.65a.1.1 0 0 0 .11-.04c.4-.55.76-1.13 1.08-1.75a.09.09 0 0 0-.05-.13c-.57-.22-1.11-.48-1.64-.78a.1.1 0 0 1-.01-.16c.11-.08.22-.17.32-.25a.1.1 0 0 1 .1-.01c3.44 1.57 7.16 1.57 10.56 0a.09.09 0 0 1 .1.01c.11.09.21.17.32.26a.1.1 0 0 1-.01.16c-.52.31-1.07.56-1.64.78a.09.09 0 0 0-.05.13c.33.62.69 1.2 1.08 1.75.03.04.08.06.12.04 1.72-.53 3.45-1.33 5.25-2.65a.1.1 0 0 0 .04-.07c.43-4.41-.72-8.26-3.01-11.67a.08.08 0 0 0-.04-.03ZM8.52 14.7c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
       </a>
-      <a href="#" class="login">Se connecter</a>
     </div>
   </header>
 
@@ -159,21 +151,10 @@
           </div>
         </div>
 
-        <!-- Onglets joueurs -->
-        <div class="player-tabs" id="player-tabs">
-          <button class="ptab active" data-player="0">Joueur 1 — Cap.</button>
-          <button class="ptab" data-player="1">Joueur 2</button>
-          <button class="ptab" data-player="2">Joueur 3</button>
-          <button class="ptab" data-player="3">Joueur 4</button>
-          <button class="ptab" data-player="4">Joueur 5</button>
-        </div>
-
         <form id="joueurs-form" novalidate>
 
-          <!-- 5 panneaux joueurs -->
-          <div id="panels-container">
-            <!-- Généré par JS -->
-          </div>
+          <!-- 5 joueurs visibles simultanément -->
+          <div id="panels-container"></div>
 
           <div style="display:flex; align-items:center; gap:14px; margin-top:24px;">
             <button type="button" onclick="history.back()" style="
@@ -272,132 +253,88 @@
   // ── Champs par joueur ────────────────────────────────────────────────────────
   const NB_JOUEURS = 5;
   const joueurs    = inscData.joueurs || Array(NB_JOUEURS).fill(null).map(() => ({}));
-  let   activePanel = 0;
 
   function renderPanels() {
     const container = document.getElementById('panels-container');
     container.innerHTML = '';
-
     for (let i = 0; i < NB_JOUEURS; i++) {
-      const j    = joueurs[i] || {};
+      const j = joueurs[i] || {};
       const isCap = i === 0;
-      const div  = document.createElement('div');
-      div.className = 'player-panel' + (i === activePanel ? ' active' : '');
-      div.id = `panel-${i}`;
-
+      const div = document.createElement('div');
+      div.className = 'player-block';
       div.innerHTML = `
-        <div class="player-panel-header">
-          <div class="player-num${j.prenom ? ' done-num' : ''}" id="pnum-${i}">${i+1}</div>
-          <div>
-            <div style="font-family:'Oswald',sans-serif; font-size:16px; font-weight:600;">
-              ${isCap ? 'Joueur 1 — Capitaine' : `Joueur ${i+1}`}
-            </div>
-            ${isCap ? '<div class="captain-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18 5 7l5 3 2-5 2 5 5-3 2 11H3Zm0 2h18v2H3z"/></svg> Capitaine d\'équipe</div>' : ''}
-          </div>
+        <div class="player-block-head">
+          <div class="player-num${isCap?' cap-num':''}">${i+1}</div>
+          <div class="player-block-title">${isCap ? 'Joueur 1' : 'Joueur '+(i+1)}</div>
+          ${isCap ? '<div class="captain-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18 5 7l5 3 2-5 2 5 5-3 2 11H3Z"/></svg> Capitaine</div>' : ''}
         </div>
-        <div class="field-grid-2">
+        <div class="player-block-body">
           <div>
             <div class="lab">Prénom <span style="color:#ef2434">*</span></div>
-            <input class="field-input" type="text" name="prenom_${i}" value="${j.prenom||''}" placeholder="Ex : Lucas" required />
+            <input class="field-input" type="text" name="prenom_${i}" value="${j.prenom||''}" placeholder="Lucas" required />
           </div>
           <div>
             <div class="lab">Nom <span style="color:#ef2434">*</span></div>
-            <input class="field-input" type="text" name="nom_${i}" value="${j.nom||''}" placeholder="Ex : Martin" required />
+            <input class="field-input" type="text" name="nom_${i}" value="${j.nom||''}" placeholder="Martin" required />
           </div>
-        </div>
-        <div class="field-grid-2">
           <div>
-            <div class="lab">Pseudo / Surnom <span style="color:#ef2434">*</span></div>
-            <input class="field-input" type="text" name="pseudo_${i}" value="${j.pseudo||''}" placeholder="Ex : Zerox" required />
+            <div class="lab">Pseudo <span style="color:#ef2434">*</span></div>
+            <input class="field-input" type="text" name="pseudo_${i}" value="${j.pseudo||''}" placeholder="Zerox" required />
           </div>
           <div>
             <div class="lab">Téléphone <span style="color:#ef2434">*</span></div>
             <input class="field-input" type="tel" name="telephone_${i}" value="${j.telephone||''}" placeholder="06 XX XX XX XX" required />
           </div>
-        </div>
-        <div class="field-grid-1">
-          <div class="lab">Email <span style="color:#ef2434">*</span></div>
-          <input class="field-input" type="email" name="email_${i}" value="${j.email||''}" placeholder="joueur@email.com" required />
-        </div>
-      `;
+          <div class="full">
+            <div class="lab">Email <span style="color:#ef2434">*</span></div>
+            <input class="field-input" type="email" name="email_${i}" value="${j.email||''}" placeholder="joueur@email.com" required />
+          </div>
+        </div>`;
       container.appendChild(div);
     }
   }
 
-  function switchTab(index) {
-    activePanel = index;
-    document.querySelectorAll('.ptab').forEach((t, i) => {
-      t.className = 'ptab' + (i === index ? ' active' : (joueurs[i]?.prenom ? ' done' : ''));
-    });
-    document.querySelectorAll('.player-panel').forEach((p, i) => {
-      p.className = 'player-panel' + (i === index ? ' active' : '');
-    });
-  }
-
-  function saveCurrentPanel(index) {
-    const j = joueurs[index] || {};
-    j.prenom    = document.querySelector(`[name="prenom_${index}"]`)?.value || '';
-    j.nom       = document.querySelector(`[name="nom_${index}"]`)?.value || '';
-    j.pseudo    = document.querySelector(`[name="pseudo_${index}"]`)?.value || '';
-    j.telephone = document.querySelector(`[name="telephone_${index}"]`)?.value || '';
-    j.email     = document.querySelector(`[name="email_${index}"]`)?.value || '';
-    joueurs[index] = j;
-
-    // Update counter
-    const filled = joueurs.filter(j => j?.prenom).length;
+  function collectAll() {
+    for (let i = 0; i < NB_JOUEURS; i++) {
+      joueurs[i] = {
+        prenom:    document.querySelector(`[name="prenom_${i}"]`)?.value.trim() || '',
+        nom:       document.querySelector(`[name="nom_${i}"]`)?.value.trim() || '',
+        pseudo:    document.querySelector(`[name="pseudo_${i}"]`)?.value.trim() || '',
+        telephone: document.querySelector(`[name="telephone_${i}"]`)?.value.trim() || '',
+        email:     document.querySelector(`[name="email_${i}"]`)?.value.trim() || '',
+      };
+    }
+    const filled = joueurs.filter(j => j.prenom).length;
     document.getElementById('sidebar-joueurs-count').textContent = filled;
-
-    // Update tab style
-    const tabs = document.querySelectorAll('.ptab');
-    tabs[index].className = 'ptab' + (index === activePanel ? ' active' : '') + (j.prenom ? ' done' : '');
-    document.getElementById(`pnum-${index}`)?.classList.toggle('done-num', !!j.prenom);
   }
 
   // ── Init ─────────────────────────────────────────────────────────────────────
   renderPanels();
 
-  document.getElementById('player-tabs').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-player]');
-    if (!btn) return;
-    saveCurrentPanel(activePanel);
-    renderPanels();
-    switchTab(parseInt(btn.dataset.player));
-  });
-
-  // Auto-save on input change
-  document.getElementById('panels-container').addEventListener('input', () => {
-    saveCurrentPanel(activePanel);
-  });
+  document.getElementById('panels-container').addEventListener('input', collectAll);
 
   // ── Submit ───────────────────────────────────────────────────────────────────
   document.getElementById('joueurs-form').addEventListener('submit', (e) => {
     e.preventDefault();
-    saveCurrentPanel(activePanel);
+    collectAll();
 
-    // Valider tous les joueurs
     const errors = [];
     for (let i = 0; i < NB_JOUEURS; i++) {
       const j = joueurs[i] || {};
       if (!j.prenom || !j.nom || !j.pseudo || !j.email || !j.telephone) {
         errors.push(`Joueur ${i+1} : informations incomplètes`);
-      }
-      if (j.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(j.email)) {
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(j.email)) {
         errors.push(`Joueur ${i+1} : email invalide`);
       }
     }
 
     if (errors.length) {
       alert('Veuillez corriger les erreurs :\n\n' + errors.join('\n'));
-      // Aller sur le premier joueur incomplet
-      const firstError = errors[0].match(/Joueur (\d+)/);
-      if (firstError) switchTab(parseInt(firstError[1]) - 1);
       return;
     }
 
-    // Sauvegarder en sessionStorage
     inscData.joueurs = joueurs;
     sessionStorage.setItem('rushfive_inscription', JSON.stringify(inscData));
-
     window.location.href = 'inscription-3.html';
   });
 

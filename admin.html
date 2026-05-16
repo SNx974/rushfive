@@ -291,12 +291,23 @@ td { padding: 14px 16px; font-size: 13px; vertical-align: middle; }
     Statistiques
   </button>
 
+  <button class="nav-item" data-section="content">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/></svg>
+    Contenu du site
+  </button>
+
   <div class="sidebar-section-label" style="margin-top:8px;">Actions</div>
 
   <button class="nav-item" id="btn-export">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Exporter CSV
   </button>
+
+  <a href="https://dashboard.stripe.com" target="_blank" rel="noopener" class="nav-item" style="text-decoration:none; color:inherit;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    Dashboard Stripe
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto; opacity:.4"><path d="M7 17 17 7M7 7h10v10"/></svg>
+  </a>
 
   <a href="index.html" class="nav-item" style="text-decoration:none; color:inherit;">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
@@ -393,6 +404,75 @@ td { padding: 14px 16px; font-size: 13px; vertical-align: middle; }
         <div id="pag-info">—</div>
         <div class="page-btns" id="page-btns"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION: CONTENT EDITOR ── -->
+  <div class="content" id="section-content" style="display:none;">
+    <div style="max-width:780px;">
+
+      <!-- Tabs -->
+      <div style="display:flex; gap:8px; margin-bottom:24px; border-bottom:1px solid var(--line); padding-bottom:0;">
+        <button class="ctab active" data-ctab="tournoi" style="padding:10px 18px; background:none; border:none; border-bottom:2px solid var(--red); color:#fff; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.06em; cursor:pointer; margin-bottom:-1px;">TOURNOI</button>
+        <button class="ctab" data-ctab="partenaires" style="padding:10px 18px; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted); font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.06em; cursor:pointer; margin-bottom:-1px;">PARTENAIRES</button>
+        <button class="ctab" data-ctab="recompenses" style="padding:10px 18px; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted); font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.06em; cursor:pointer; margin-bottom:-1px;">RÉCOMPENSES</button>
+        <button class="ctab" data-ctab="socials" style="padding:10px 18px; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted); font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.06em; cursor:pointer; margin-bottom:-1px;">RÉSEAUX</button>
+      </div>
+
+      <!-- Tournoi -->
+      <div class="ctab-panel" id="ctab-tournoi">
+        <div class="table-wrap" style="padding:24px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Nom du tournoi</label><input class="search-input" id="c-nom" style="width:100%;" /></div>
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Date</label><input class="search-input" id="c-date" style="width:100%;" /></div>
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Lieu</label><input class="search-input" id="c-lieu" style="width:100%;" /></div>
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Cashprize</label><input class="search-input" id="c-cashprize" style="width:100%;" /></div>
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Prix inscription (centimes)</label><input class="search-input" id="c-prix" type="number" style="width:100%;" /></div>
+          </div>
+          <button class="btn btn-red" onclick="saveTournoi()">Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- Partenaires -->
+      <div class="ctab-panel" id="ctab-partenaires" style="display:none;">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">PARTENAIRES</div>
+            <button class="btn btn-red btn-sm" onclick="addPartenaire()">+ Ajouter</button>
+          </div>
+          <div id="partenaires-list" style="padding:16px; display:flex; flex-direction:column; gap:10px;"></div>
+          <div style="padding:16px; border-top:1px solid var(--line);">
+            <button class="btn btn-red" onclick="savePartenaires()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Récompenses -->
+      <div class="ctab-panel" id="ctab-recompenses" style="display:none;">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">RÉCOMPENSES</div>
+            <button class="btn btn-red btn-sm" onclick="addRecompense()">+ Ajouter</button>
+          </div>
+          <div id="recompenses-list" style="padding:16px; display:flex; flex-direction:column; gap:10px;"></div>
+          <div style="padding:16px; border-top:1px solid var(--line);">
+            <button class="btn btn-red" onclick="saveRecompenses()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Socials -->
+      <div class="ctab-panel" id="ctab-socials" style="display:none;">
+        <div class="table-wrap" style="padding:24px;">
+          <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:16px;">
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Instagram (URL)</label><input class="search-input" id="c-instagram" style="width:100%;" placeholder="https://instagram.com/..." /></div>
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Discord (invite URL)</label><input class="search-input" id="c-discord" style="width:100%;" placeholder="https://discord.gg/..." /></div>
+            <div><label class="stat-label" style="display:block;margin-bottom:6px;">Twitter/X (URL)</label><input class="search-input" id="c-twitter" style="width:100%;" placeholder="https://x.com/..." /></div>
+          </div>
+          <button class="btn btn-red" onclick="saveSocials()">Enregistrer</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -750,10 +830,142 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
+// ── SECTION NAV ───────────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item[data-section]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item[data-section]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sec = btn.dataset.section;
+    document.getElementById('section-inscriptions').style.display = sec === 'inscriptions' ? '' : 'none';
+    document.getElementById('section-content').style.display      = sec === 'content'      ? '' : 'none';
+    document.getElementById('section-title').textContent = sec === 'inscriptions' ? 'INSCRIPTIONS' : 'CONTENU DU SITE';
+    if (sec === 'content') loadContent();
+  });
+});
+
+// ── CONTENT TABS ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.ctab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.ctab').forEach(t => {
+      t.style.borderBottomColor = 'transparent'; t.style.color = 'var(--muted)';
+    });
+    tab.style.borderBottomColor = 'var(--red)'; tab.style.color = '#fff';
+    document.querySelectorAll('.ctab-panel').forEach(p => p.style.display = 'none');
+    document.getElementById('ctab-' + tab.dataset.ctab).style.display = '';
+  });
+});
+
+// ── CONTENT API ───────────────────────────────────────────────────────────────
+let contentData = {};
+
+async function loadContent() {
+  try {
+    contentData = await fetch('/api/content').then(r => r.json());
+    const t = contentData.tournoi || {};
+    document.getElementById('c-nom').value      = t.nom || '';
+    document.getElementById('c-date').value     = t.date || '';
+    document.getElementById('c-lieu').value     = t.lieu || '';
+    document.getElementById('c-cashprize').value = t.cashprize || '';
+    document.getElementById('c-prix').value     = t.prixInscription || 5000;
+    const s = contentData.socials || {};
+    document.getElementById('c-instagram').value = s.instagram || '';
+    document.getElementById('c-discord').value   = s.discord || '';
+    document.getElementById('c-twitter').value   = s.twitter || '';
+    renderPartenaires(); renderRecompenses();
+  } catch(e) { toast('Impossible de charger le contenu', 'error'); }
+}
+
+function renderPartenaires() {
+  const list = contentData.partenaires || [];
+  document.getElementById('partenaires-list').innerHTML = list.map((p, i) => `
+    <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:10px; align-items:center;">
+      <input class="search-input" value="${p.nom||''}" oninput="contentData.partenaires[${i}].nom=this.value" placeholder="Nom du partenaire" />
+      <input class="search-input" value="${p.url||''}" oninput="contentData.partenaires[${i}].url=this.value" placeholder="https://..." />
+      <button class="btn btn-danger btn-sm" onclick="removePartenaire(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addPartenaire() {
+  contentData.partenaires = contentData.partenaires || [];
+  contentData.partenaires.push({ nom: '', url: '#' });
+  renderPartenaires();
+}
+
+function removePartenaire(i) {
+  contentData.partenaires.splice(i, 1);
+  renderPartenaires();
+}
+
+function renderRecompenses() {
+  const list = contentData.recompenses || [];
+  document.getElementById('recompenses-list').innerHTML = list.map((r, i) => `
+    <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:10px; align-items:center;">
+      <input class="search-input" value="${r.place||''}" oninput="contentData.recompenses[${i}].place=this.value" placeholder="Ex: 1ère place" />
+      <input class="search-input" value="${r.montant||''}" oninput="contentData.recompenses[${i}].montant=this.value" placeholder="Ex: 600€" />
+      <button class="btn btn-danger btn-sm" onclick="removeRecompense(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addRecompense() {
+  contentData.recompenses = contentData.recompenses || [];
+  contentData.recompenses.push({ place: '', montant: '' });
+  renderRecompenses();
+}
+
+function removeRecompense(i) {
+  contentData.recompenses.splice(i, 1);
+  renderRecompenses();
+}
+
+async function saveTournoi() {
+  try {
+    await fetch('/api/content', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify({ tournoi: {
+        nom: document.getElementById('c-nom').value,
+        date: document.getElementById('c-date').value,
+        lieu: document.getElementById('c-lieu').value,
+        cashprize: document.getElementById('c-cashprize').value,
+        prixInscription: parseInt(document.getElementById('c-prix').value) || 5000,
+      }})
+    });
+    toast('Tournoi mis à jour ✓');
+  } catch(e) { toast('Erreur sauvegarde', 'error'); }
+}
+
+async function savePartenaires() {
+  try {
+    await fetch('/api/content/partenaires', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify(contentData.partenaires || [])
+    });
+    toast('Partenaires mis à jour ✓');
+  } catch(e) { toast('Erreur sauvegarde', 'error'); }
+}
+
+async function saveRecompenses() {
+  try {
+    await fetch('/api/content/recompenses', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify(contentData.recompenses || [])
+    });
+    toast('Récompenses mises à jour ✓');
+  } catch(e) { toast('Erreur sauvegarde', 'error'); }
+}
+
+async function saveSocials() {
+  try {
+    await fetch('/api/content', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body: JSON.stringify({ socials: {
+        instagram: document.getElementById('c-instagram').value,
+        discord:   document.getElementById('c-discord').value,
+        twitter:   document.getElementById('c-twitter').value,
+      }})
+    });
+    toast('Réseaux sociaux mis à jour ✓');
+  } catch(e) { toast('Erreur sauvegarde', 'error'); }
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 loadStats();
 loadInscriptions();
-// Auto-refresh toutes les 30s
 setInterval(() => { loadStats(); loadInscriptions(); }, 30000);
 </script>
 </body>
