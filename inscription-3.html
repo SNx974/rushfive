@@ -119,10 +119,18 @@
       <a href="#">Communauté</a>
       <a href="inscription.html" class="cta">S'inscrire</a>
     </nav>
-    <div class="nav-right">
-      <a href="#" class="login">Se connecter</a>
-    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-right"></div>
   </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Accueil</a>
+    <a href="#">Tournois</a>
+    <a href="#">Communauté</a>
+    <a href="inscription.html" class="cta">S'inscrire</a>
+  </div>
 
   <section class="shell inscription-wrap">
 
@@ -448,6 +456,8 @@
       mEl.innerHTML=pad(m)+'<span class="small">m</span>';
     },1000);
   })();
+
+  (function(){var h=document.getElementById('nav-hamburger'),m=document.getElementById('mobile-menu');if(!h||!m)return;h.addEventListener('click',function(){var o=m.classList.toggle('open');document.body.classList.toggle('mobile-nav-open',o);});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open');document.body.classList.remove('mobile-nav-open');});});})();
 </script>
 </body>
 </html>

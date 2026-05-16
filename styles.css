@@ -1675,37 +1675,17 @@ button { font-family: inherit; }
   letter-spacing: 0.22em;
 }
 
+/* ─── TABLET (≤ 1180px) ──────────────────────────────────────────────────── */
 @media (max-width: 1180px) {
   .ins-grid { grid-template-columns: 1fr 1fr; }
   .ins-grid .summary { grid-column: span 2; flex-direction: row; flex-wrap: wrap; }
   .ins-grid .summary > * { flex: 1 1 30%; }
-}
-@media (max-width: 900px) {
-  .ins-grid { grid-template-columns: 1fr; }
-  .ins-grid .summary { flex-direction: column; }
-  .ins-title { font-size: 38px; }
-  .choice-grid, .role-grid, .field-grid { grid-template-columns: 1fr; }
-}
-
-/* responsive guard */
-@media (max-width: 1180px) {
   .why-grid { grid-template-columns: repeat(3, 1fr); }
   .why-grid .map-wrap { grid-column: span 3; }
   .why-grid .signup { grid-column: span 3; }
 }
-@media (max-width: 900px) {
-  .features { grid-template-columns: 1fr; }
-  .inscription-grid { grid-template-columns: 1fr; }
-  .hero-title { font-size: 64px; }
-  .hero-numeric { font-size: 240px; }
-  .page-title { font-size: 44px; }
-  .game-tag { display: none; }
-  .nav-menu { display: none; }
-}
 
-/* ─── MOBILE RESPONSIVE ──────────────────────────────────────────────────── */
-
-/* Hamburger nav */
+/* ─── HAMBURGER (always in DOM, hidden on desktop) ───────────────────────── */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -1713,15 +1693,16 @@ button { font-family: inherit; }
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
+  z-index: 11;
 }
 .nav-hamburger span {
   display: block;
-  width: 22px;
+  width: 24px;
   height: 2px;
   background: #fff;
   border-radius: 2px;
-  transition: .2s;
+  transition: transform .25s ease, opacity .2s ease;
 }
 .mobile-nav-open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .mobile-nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
@@ -1731,77 +1712,129 @@ button { font-family: inherit; }
   display: none;
   position: fixed;
   inset: 0;
-  top: 64px;
-  background: rgba(10,10,12,.97);
-  z-index: 90;
+  background: rgba(5,5,5,.97);
+  z-index: 10;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 28px;
+  gap: 32px;
 }
 .mobile-menu.open { display: flex; }
 .mobile-menu a {
   font-family: 'Oswald', sans-serif;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: .06em;
   color: #fff;
   text-decoration: none;
   text-transform: uppercase;
+  transition: color .15s;
 }
+.mobile-menu a:hover { color: var(--orange); }
 .mobile-menu a.cta {
-  background: var(--red, #ef2434);
-  padding: 14px 36px;
+  background: var(--orange);
+  color: #0a0a0a;
+  padding: 14px 40px;
   border-radius: 8px;
-  font-size: 20px;
+  font-size: 22px;
+  margin-top: 8px;
 }
 
-@media (max-width: 768px) {
-  /* Show hamburger, hide regular nav */
-  .nav-hamburger { display: flex; }
-  .nav .nav-menu  { display: none !important; }
+/* ─── SMALL TABLET (≤ 900px) ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .shell { padding: 0 20px; }
+
+  /* Nav — switch to flex so hamburger fits naturally */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    padding: 14px 0 10px;
+  }
+  .nav .nav-menu  { display: none; }
   .nav .nav-right { display: none; }
+  .nav-hamburger  { display: flex; }
+  .nav-logo img   { width: 64px; height: 64px; }
 
   /* Hero */
-  .hero-title   { font-size: 48px; }
-  .hero-numeric { font-size: 160px; }
-  .hero-sub     { font-size: 14px; }
+  .hero-stage   { height: 380px; }
+  .hero-numeric { font-size: 200px; }
+  .hero-title   { font-size: 68px; }
+  .hero-subtitle { font-size: 11px; letter-spacing: .18em; gap: 12px; }
+  .game-tag     { display: none; }
+  .field        { width: 800px; }
 
-  /* Inscription stepper */
-  .stepper { gap: 4px; }
-  .stepper .lbl { font-size: 9px; }
-  .stepper .bar { min-width: 20px; }
+  /* Sections */
+  .features           { grid-template-columns: 1fr; gap: 14px; }
+  .inscription-grid   { grid-template-columns: 1fr; gap: 24px; }
+  .why-grid           { grid-template-columns: repeat(2, 1fr); }
+  .why-grid .map-wrap { grid-column: span 2; }
+  .why-grid .signup   { grid-column: span 2; }
+  .footer-row         { grid-template-columns: 1fr 1fr; gap: 24px; padding: 28px 0 16px; }
+  .page-title         { font-size: 44px; }
+  .info-list          { grid-template-columns: 1fr; }
 
-  /* Inscription grid → single col */
+  /* Inscription flow */
   .ins-grid { grid-template-columns: 1fr !important; }
-  .tourney-card { display: none; }
-  .summary { display: none; }
-
-  /* Player block compact */
-  .player-block-body { grid-template-columns: 1fr 1fr !important; }
-
-  /* Confirm page ref-box */
-  .ref-box { grid-template-columns: 1fr !important; }
-
-  /* Admin panel */
-  .sidebar { display: none; }
-  .stats-grid { grid-template-columns: 1fr 1fr !important; }
-  .topbar { padding: 12px 16px; }
-  .content { padding: 16px; }
-  table thead th:nth-child(3),
-  table thead th:nth-child(6),
-  table thead th:nth-child(7),
-  table tbody td:nth-child(3),
-  table tbody td:nth-child(6),
-  table tbody td:nth-child(7) { display: none; }
+  .ins-grid .tourney-card { display: none; }
+  .ins-grid .summary      { display: none; }
+  .ins-title              { font-size: 38px; }
+  .choice-grid, .role-grid, .field-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 480px) {
-  .hero-title   { font-size: 38px; }
-  .hero-numeric { font-size: 120px; }
-  .stats-grid   { grid-template-columns: 1fr !important; }
-  .ins-title    { font-size: 28px; }
+/* ─── MOBILE (≤ 600px) ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .shell { padding: 0 16px; }
+
+  /* Hero */
+  .hero           { padding: 16px 0 24px; }
+  .hero-stage     { height: 300px; }
+  .hero-numeric   { font-size: 130px; top: -10px; }
+  .hero-title     { font-size: 48px; }
+  .hero-subtitle  { font-size: 10px; gap: 8px; letter-spacing: .12em; }
+  .hero-content   { padding-top: 36px; }
+  .field          { width: 600px; }
+  .hero-cta       { margin-top: 18px; }
+  .btn            { padding: 13px 24px; font-size: 13px; }
+
+  /* Feature cards */
+  .card { padding: 18px; }
+
+  /* Why grid → single col */
+  .why-grid           { grid-template-columns: 1fr; }
+  .why-grid .map-wrap { grid-column: 1; }
+  .why-grid .signup   { grid-column: 1; }
+
+  /* Footer */
+  .footer-row  { grid-template-columns: 1fr; gap: 16px; }
+  .foot-bottom { flex-direction: column; align-items: flex-start; gap: 8px; font-size: 11px; }
+
+  /* Inscription page */
+  .page-title  { font-size: 32px; }
+  .page-lead   { font-size: 13px; }
+  .form-card   { padding: 20px 16px; }
+  .form-card .step-row { display: none; }
+
+  /* Stepper compact */
+  .stepper { gap: 2px; margin-bottom: 24px; }
+  .stepper .lbl { display: none; }
+  .stepper .num { width: 28px; height: 28px; font-size: 12px; }
+  .stepper .bar { min-width: 14px; }
+
+  /* Inscription steps */
+  .ins-title  { font-size: 28px; }
+  .ins-sub    { font-size: 13px; }
+  .breadcrumb { display: none; }
+
+  /* Player blocks */
+  .player-block-body { grid-template-columns: 1fr 1fr !important; }
+
+  /* Confirm page */
+  .ref-box       { grid-template-columns: 1fr !important; }
   .confirm-title { font-size: 28px; }
-  .player-block-body { grid-template-columns: 1fr !important; }
-  .player-block-body .full { grid-column: 1; }
+  .confirm-actions { flex-direction: column; }
+
+  /* Partners chip wrap */
+  .partner-logos { flex-wrap: wrap; gap: 10px; }
 }
