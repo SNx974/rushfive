@@ -20,9 +20,13 @@ function auth(req, res, next) {
 
 // POST /api/admin/login
 router.post('/login', (req, res) => {
-  const { password } = req.body;
-  if (!password || password !== process.env.ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Mot de passe incorrect' });
+  const { login, password } = req.body;
+  if (
+    !login || !password ||
+    login    !== process.env.ADMIN_LOGIN ||
+    password !== process.env.ADMIN_PASSWORD
+  ) {
+    return res.status(401).json({ error: 'Identifiants incorrects' });
   }
   const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '8h' });
   res.json({ token });

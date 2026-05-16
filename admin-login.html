@@ -137,6 +137,13 @@
 
     <form id="login-form" novalidate>
       <div class="field-wrap">
+        <label class="field-label" for="login">Identifiant</label>
+        <input
+          class="field-input" type="text" id="login"
+          placeholder="Votre identifiant" required autocomplete="username"
+        />
+      </div>
+      <div class="field-wrap">
         <label class="field-label" for="password">Mot de passe</label>
         <input
           class="field-input" type="password" id="password"
@@ -183,6 +190,7 @@
     e.preventDefault();
     const btn   = document.getElementById('login-btn');
     const err   = document.getElementById('login-error');
+    const login = document.getElementById('login').value;
     const pw    = document.getElementById('password').value;
 
     err.style.display = 'none';
@@ -193,7 +201,7 @@
       const res  = await fetch('/api/admin/login', {
         method : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body   : JSON.stringify({ password: pw }),
+        body   : JSON.stringify({ login, password: pw }),
       });
       const data = await res.json();
 
