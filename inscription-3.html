@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RUSH XP — Inscription · Paiement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  .recap-team {
+    background:#0a0a0c; border:1px solid #2a2a32; border-radius:10px;
+    padding:18px 20px; margin-bottom:20px;
+  }
+  .recap-team-header {
+    display:flex; align-items:center; gap:12px; margin-bottom:14px;
+    padding-bottom:12px; border-bottom:1px solid #1f1f26;
+  }
+  .recap-team-icon {
+    width:36px; height:36px; border-radius:8px;
+    background:rgba(239,36,52,.1); border:1px solid rgba(239,36,52,.25);
+    display:grid; place-items:center; flex-shrink:0;
+  }
+  .recap-team-name { font-family:'Oswald',sans-serif; font-size:18px; font-weight:700; }
+
+  .joueurs-recap { display:flex; flex-direction:column; gap:6px; }
+  .jr-row {
+    display:flex; align-items:center; gap:10px; padding:6px 0;
+    border-bottom:1px solid #14141a;
+  }
+  .jr-row:last-child { border-bottom:none; }
+  .jr-num {
+    width:24px; height:24px; border-radius:50%; flex-shrink:0;
+    background:#1a1a20; color:#8a8a93; font-size:11px; font-weight:600;
+    display:grid; place-items:center; font-family:'Oswald',sans-serif;
+  }
+  .jr-num.cap { background:rgba(239,36,52,.1); color:#ef2434; }
+  .jr-name { flex:1; font-size:13px; font-weight:500; }
+  .jr-pseudo { font-size:11px; color:#8a8a93; }
+  .jr-cap { font-size:10px; color:#ef2434; font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:.06em; }
+
+  /* Stripe Payment Element container */
+  #payment-element-wrap {
+    background:#0a0a0c; border:1px solid #2a2a32; border-radius:10px;
+    padding:20px; margin-bottom:20px;
+  }
+  #payment-element { min-height:100px; }
+
+  .price-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0; border-bottom:1px solid #1f1f26; font-size:13px; color:#8a8a93;
+  }
+  .price-row.total {
+    border-bottom:none; font-weight:700; font-size:16px; color:#fff;
+    padding-top:14px; margin-top:4px;
+  }
+  .price-row.total .price-val { color:#ef2434; font-family:'Oswald',sans-serif; font-size:22px; }
+
+  .payment-error {
+    background:rgba(239,36,52,.08); border:1px solid rgba(239,36,52,.3);
+    color:#ff6070; border-radius:8px; padding:12px 16px; font-size:13px;
+    margin-bottom:16px; display:none;
+  }
+  .payment-success-msg {
+    background:rgba(40,209,124,.08); border:1px solid rgba(40,209,124,.3);
+    color:#28d17c; border-radius:8px; padding:12px 16px; font-size:13px;
+    margin-bottom:16px; display:none;
+  }
+
+  .pay-btn {
+    width:100%; padding:16px; border-radius:8px;
+    background:linear-gradient(180deg,#ef2434,#c1121f); color:#fff;
+    font-family:'Oswald',sans-serif; font-size:15px; font-weight:700;
+    letter-spacing:.08em; cursor:pointer; border:none;
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    box-shadow:0 6px 24px rgba(239,36,52,.35);
+    transition: opacity .2s;
+  }
+  .pay-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+  .stripe-badge {
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:12px; font-size:11px; color:#5e5e66;
+  }
+
+  .loading-overlay {
+    position:fixed; inset:0; background:rgba(10,10,12,.85);
+    display:none; place-items:center; z-index:999;
+    flex-direction:column; gap:16px;
+  }
+  .loading-overlay.active { display:flex; }
+  .spinner {
+    width:44px; height:44px; border:3px solid #2a2a32;
+    border-top-color:#ef2434; border-radius:50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <div style="font-family:'Oswald',sans-serif; font-size:14px; color:#8a8a93; letter-spacing:.06em;">
+      TRAITEMENT EN COURS...
+    </div>
+  </div>
+
+  <header class="shell nav" data-screen-label="02c Paiement">
+    <a class="nav-logo" href="index.html" aria-label="RUSH XP">
+      <img src="assets/rushxp-logo.png" alt="RUSH XP" />
+    </a>
+    <nav class="nav-menu">
+      <a href="index.html">Accueil</a>
+      <a href="#" class="active">Tournois</a>
+      <a href="#">Classements</a>
+      <a href="#">Communauté</a>
+      <a href="#">Boutique</a>
+      <a href="inscription.html" class="cta">S'inscrire</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#" class="login">Se connecter</a>
+    </div>
+  </header>
+
+  <section class="shell inscription-wrap">
+
+    <div class="breadcrumb">
+      <a href="#">Tournois</a><span class="sep">▸</span>
+      <a href="#">Rush Five</a><span class="sep">▸</span>
+      <span class="here">Paiement</span>
+    </div>
+
+    <div class="ins-grid">
+
+      <!-- LEFT: Tournament card -->
+      <aside class="tourney-card">
+        <div class="tourney-hero">
+          <span class="lamp"></span><span class="lamp"></span><span class="lamp"></span>
+          <div class="stadium"></div>
+          <h2>RUSH FIVE</h2>
+        </div>
+        <div class="tourney-body">
+          <div class="chip-row">
+            <span class="chip">Dimanche 13 Juillet</span>
+            <span class="chip">14:00</span>
+            <span class="chip">St-Denis</span>
+          </div>
+          <h3 class="section-title">Détails du paiement</h3>
+          <ul class="detail-list">
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4h10v3a5 5 0 0 1-10 0V4Z"/></svg>
+              <span class="k">Cashprize</span>
+              <span class="v" style="color:var(--orange,#f97316);">1000€ + Récompenses</span>
+            </li>
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
+              <span class="k">Paiement</span>
+              <span class="v">Sécurisé par Stripe</span>
+            </li>
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+              <span class="k">Données</span>
+              <span class="v">Chiffrées SSL 256-bit</span>
+            </li>
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+              <span class="k">Remboursement</span>
+              <span class="v">Sous 48h si annulation</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- CENTER: Payment form -->
+      <main class="ins-main">
+        <h1 class="ins-title">Paiement <span class="accent">sécurisé</span></h1>
+        <p class="ins-sub">Vérifiez votre récapitulatif puis procédez au paiement. <span class="em">Transaction sécurisée par Stripe.</span></p>
+
+        <div class="stepper" role="progressbar" aria-valuenow="3" aria-valuemax="4">
+          <div class="s done"><span class="num">✓</span><span class="lbl">Équipe</span></div>
+          <div class="bar done-bar"></div>
+          <div class="s done"><span class="num">✓</span><span class="lbl">Joueurs</span></div>
+          <div class="bar done-bar"></div>
+          <div class="s active"><span class="num">3</span><span class="lbl">Paiement</span></div>
+          <div class="bar"></div>
+          <div class="s"><span class="num">4</span><span class="lbl">Confirmation</span></div>
+        </div>
+
+        <!-- Récapitulatif équipe -->
+        <div class="recap-team">
+          <div class="recap-team-header">
+            <div class="recap-team-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef2434" stroke-width="1.8"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="10" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M13 19c0-2 1.8-3.5 4-3.5s4 1.5 4 3.5"/></svg>
+            </div>
+            <div class="recap-team-name" id="recap-team-name">—</div>
+            <div style="margin-left:auto; font-size:12px; color:#8a8a93;" id="recap-team-mode">FOOT 5v5</div>
+          </div>
+          <div class="joueurs-recap" id="joueurs-recap">
+            <!-- Généré par JS -->
+          </div>
+        </div>
+
+        <!-- Prix -->
+        <div style="background:#0a0a0c; border:1px solid #2a2a32; border-radius:10px; padding:18px 20px; margin-bottom:20px;">
+          <div class="price-row">
+            <span>Inscription équipe (5 joueurs)</span>
+            <span id="price-base">—</span>
+          </div>
+          <div class="price-row">
+            <span>Frais de traitement</span>
+            <span>Inclus</span>
+          </div>
+          <div class="price-row total">
+            <span>Total à payer</span>
+            <span class="price-val" id="price-total">—</span>
+          </div>
+        </div>
+
+        <!-- Stripe Payment Element -->
+        <div id="payment-element-wrap">
+          <div id="payment-element-loading" style="text-align:center; padding:20px; color:#8a8a93; font-size:13px;">
+            Chargement du formulaire de paiement...
+          </div>
+          <div id="payment-element"></div>
+        </div>
+
+        <div class="payment-error" id="payment-error"></div>
+        <div class="payment-success-msg" id="payment-success"></div>
+
+        <button class="pay-btn" id="pay-btn" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+          PAYER — <span id="btn-amount">—</span>
+        </button>
+
+        <div class="stripe-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+          Paiement sécurisé par
+          <strong style="color:#635bff;">Stripe</strong>
+          — vos données bancaires ne nous sont jamais transmises
+        </div>
+
+        <div style="margin-top:14px; text-align:center;">
+          <button type="button" onclick="history.back()" style="
+            background:transparent; border:none; color:#8a8a93;
+            font-size:12px; cursor:pointer; text-decoration:underline;
+          ">← Modifier les joueurs</button>
+        </div>
+      </main>
+
+      <!-- RIGHT: Summary -->
+      <aside class="summary">
+        <div class="summary-card">
+          <h3 class="summary-title">Résumé de l'inscription</h3>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div>
+            <div><div class="k">Tournoi</div><div class="v">Rush Five — FOOT 5v5</div></div>
+          </div>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <div><div class="k">Date</div><div class="v">Dimanche 13 Juillet</div></div>
+          </div>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4h10v3a5 5 0 0 1-10 0V4ZM9 17h6v3H9z"/></svg></div>
+            <div><div class="k">Cashprize</div><div class="v big">1000€ à partager</div></div>
+          </div>
+          <div class="summary-row" style="margin-top:8px; padding-top:12px; border-top:1px solid #1f1f26;">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#28d17c" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg></div>
+            <div><div class="k">Montant</div><div class="v big" id="sum-price" style="color:#28d17c;">—</div></div>
+          </div>
+        </div>
+
+        <div class="countdown-card">
+          <div class="top">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v5l3 2M9 2h6"/></svg>
+            Fin des inscriptions dans :
+          </div>
+          <div class="countdown-units">
+            <div class="u" id="cd-d">02<span class="small">j</span></div>
+            <span class="colon">:</span>
+            <div class="u" id="cd-h">14<span class="small">h</span></div>
+            <span class="colon">:</span>
+            <div class="u" id="cd-m">32<span class="small">m</span></div>
+          </div>
+        </div>
+
+        <div style="background:#131316; border:1px solid #2a2a32; border-radius:10px; padding:18px;">
+          <div style="font-size:11px; font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:.08em; color:#8a8a93; margin-bottom:12px;">ACCEPTÉ</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="background:#1a1a20; border-radius:4px; padding:6px 10px; font-size:11px; font-weight:600; color:#c0c0c8;">VISA</div>
+            <div style="background:#1a1a20; border-radius:4px; padding:6px 10px; font-size:11px; font-weight:600; color:#c0c0c8;">MASTERCARD</div>
+            <div style="background:#1a1a20; border-radius:4px; padding:6px 10px; font-size:11px; font-weight:600; color:#c0c0c8;">AMEX</div>
+            <div style="background:#1a1a20; border-radius:4px; padding:6px 10px; font-size:11px; font-weight:600; color:#635bff;">STRIPE</div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="foot-bottom">
+        <div>© 2026 RUSH XP. Tous droits réservés.</div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // ── Données sessions ─────────────────────────────────────────────────────────
+  const inscData = JSON.parse(sessionStorage.getItem('rushfive_inscription') || '{}');
+  if (!inscData.equipe?.nom || !inscData.joueurs?.length) {
+    window.location.href = 'inscription.html';
+  }
+
+  // ── Remplir récapitulatif ────────────────────────────────────────────────────
+  document.getElementById('recap-team-name').textContent = inscData.equipe.nom;
+  document.getElementById('recap-team-mode').textContent = inscData.equipe.mode || 'FOOT 5v5';
+
+  const jRecap = document.getElementById('joueurs-recap');
+  jRecap.innerHTML = inscData.joueurs.map((j, i) => `
+    <div class="jr-row">
+      <div class="jr-num${i===0?' cap':''}">${i+1}</div>
+      <div class="jr-name">${j.prenom} ${j.nom}</div>
+      <div class="jr-pseudo">${j.pseudo}</div>
+      ${i===0 ? '<div class="jr-cap">CAP.</div>' : ''}
+    </div>
+  `).join('');
+
+  // ── Stripe init ──────────────────────────────────────────────────────────────
+  let stripe, elements;
+  let equipeId = inscData.equipeId || null;
+
+  async function init() {
+    // 1. Config (clé publiable + montant)
+    const cfg = await fetch('/api/config').then(r => r.json());
+    const amt = cfg.amount;
+    const amtStr = (amt / 100).toFixed(0) + '€';
+
+    document.getElementById('price-base').textContent  = amtStr;
+    document.getElementById('price-total').textContent = amtStr;
+    document.getElementById('sum-price').textContent   = amtStr;
+    document.getElementById('btn-amount').textContent  = amtStr;
+
+    stripe = Stripe(cfg.publishableKey);
+
+    // 2. Enregistrer équipe + joueurs si pas encore fait
+    if (!equipeId) {
+      const initRes = await fetch('/api/inscriptions/init', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ equipe: inscData.equipe, joueurs: inscData.joueurs }),
+      });
+      const initData = await initRes.json();
+      if (!initRes.ok) throw new Error(initData.error || 'Erreur inscription');
+      equipeId = initData.equipeId;
+      inscData.equipeId = equipeId;
+      sessionStorage.setItem('rushfive_inscription', JSON.stringify(inscData));
+    }
+
+    // 3. Créer PaymentIntent
+    const piRes = await fetch('/api/payment/create-intent', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ equipeId }),
+    });
+    const piData = await piRes.json();
+    if (!piRes.ok) throw new Error(piData.error || 'Erreur paiement');
+
+    // 4. Monter le Payment Element Stripe
+    elements = stripe.elements({
+      clientSecret: piData.clientSecret,
+      appearance: {
+        theme: 'night',
+        variables: {
+          colorPrimary        : '#ef2434',
+          colorBackground     : '#0a0a0c',
+          colorText           : '#ffffff',
+          colorDanger         : '#ff6070',
+          fontFamily          : 'Inter, sans-serif',
+          spacingUnit         : '4px',
+          borderRadius        : '8px',
+        },
+        rules: {
+          '.Input' : { backgroundColor: '#131316', border: '1px solid #2a2a32' },
+          '.Label' : { color: '#8a8a93', fontSize: '12px' },
+        }
+      }
+    });
+
+    const payEl = elements.create('payment');
+    payEl.mount('#payment-element');
+    payEl.on('ready', () => {
+      document.getElementById('payment-element-loading').style.display = 'none';
+      document.getElementById('pay-btn').disabled = false;
+    });
+  }
+
+  init().catch(err => {
+    console.error(err);
+    document.getElementById('payment-error').textContent = err.message;
+    document.getElementById('payment-error').style.display = 'block';
+    document.getElementById('payment-element-loading').textContent = 'Erreur de chargement.';
+  });
+
+  // ── Submit paiement ──────────────────────────────────────────────────────────
+  document.getElementById('pay-btn').addEventListener('click', async () => {
+    if (!stripe || !elements) return;
+
+    const btn = document.getElementById('pay-btn');
+    const err = document.getElementById('payment-error');
+    err.style.display = 'none';
+    btn.disabled = true;
+    document.getElementById('loading-overlay').classList.add('active');
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: window.location.origin + '/inscription-4.html',
+        payment_method_data: {
+          billing_details: {
+            name : `${inscData.joueurs[0].prenom} ${inscData.joueurs[0].nom}`,
+            email: inscData.joueurs[0].email,
+          }
+        }
+      },
+    });
+
+    document.getElementById('loading-overlay').classList.remove('active');
+    btn.disabled = false;
+
+    if (error) {
+      err.textContent = error.message;
+      err.style.display = 'block';
+    }
+  });
+
+  // ── Countdown ────────────────────────────────────────────────────────────────
+  (function() {
+    let d=2,h=14,m=32,s=0;
+    const dEl=document.getElementById('cd-d'),hEl=document.getElementById('cd-h'),mEl=document.getElementById('cd-m');
+    const pad=n=>String(n).padStart(2,'0');
+    setInterval(()=>{
+      s--; if(s<0){s=59;m--;} if(m<0){m=59;h--;} if(h<0){h=23;d--;} if(d<0){d=h=m=s=0;}
+      dEl.innerHTML=pad(d)+'<span class="small">j</span>';
+      hEl.innerHTML=pad(h)+'<span class="small">h</span>';
+      mEl.innerHTML=pad(m)+'<span class="small">m</span>';
+    },1000);
+  })();
+</script>
+</body>
+</html>

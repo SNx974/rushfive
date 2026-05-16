@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      PRIX_INSCRIPTION_CENTS: ${PRIX_INSCRIPTION_CENTS:-5000}
+      NOM_TOURNOI: ${NOM_TOURNOI:-Rush Five — FOOT 5v5}
+      DATE_TOURNOI: ${DATE_TOURNOI:-Dimanche 13 Juillet}
+      LIEU_TOURNOI: ${LIEU_TOURNOI:-Stade de St-Denis}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

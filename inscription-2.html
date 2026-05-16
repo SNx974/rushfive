@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RUSH XP — Inscription · Joueurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .player-tabs { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .ptab {
+    padding:8px 16px; border-radius:6px; border:1px solid var(--border,#2a2a32);
+    background:transparent; color:#8a8a93; font-family:'Oswald',sans-serif;
+    font-size:13px; font-weight:500; cursor:pointer; transition:.2s;
+  }
+  .ptab.active { background:#ef2434; border-color:#ef2434; color:#fff; }
+  .ptab.done   { border-color:#28d17c; color:#28d17c; }
+
+  .player-panel { display:none; }
+  .player-panel.active { display:block; }
+
+  .captain-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(239,36,52,.12); border:1px solid rgba(239,36,52,.3);
+    color:#ef2434; font-size:11px; font-weight:600; letter-spacing:.06em;
+    padding:4px 10px; border-radius:20px; margin-bottom:18px;
+    font-family:'Oswald',sans-serif;
+  }
+  .player-panel-header {
+    display:flex; align-items:center; gap:14px; margin-bottom:20px;
+    padding-bottom:16px; border-bottom:1px solid var(--border,#2a2a32);
+  }
+  .player-num {
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(239,36,52,.1); border:1px solid rgba(239,36,52,.3);
+    color:#ef2434; font-family:'Oswald',sans-serif;
+    font-size:16px; font-weight:700; display:grid; place-items:center; flex-shrink:0;
+  }
+  .player-num.done-num { background:rgba(40,209,124,.1); border-color:rgba(40,209,124,.3); color:#28d17c; }
+
+  .field-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+  .field-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+  .field-grid-1 { margin-bottom:14px; }
+
+  .nav-steps { display:flex; gap:6px; margin-top:8px; }
+  .ns { width:24px; height:3px; border-radius:2px; background:#2a2a32; }
+  .ns.done { background:#28d17c; }
+  .ns.active { background:#ef2434; }
+</style>
+</head>
+<body>
+
+  <header class="shell nav" data-screen-label="02b Joueurs">
+    <a class="nav-logo" href="index.html" aria-label="RUSH XP">
+      <img src="assets/rushxp-logo.png" alt="RUSH XP" />
+    </a>
+    <nav class="nav-menu" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="#" class="active">Tournois</a>
+      <a href="#">Classements</a>
+      <a href="#">Communauté</a>
+      <a href="#">Boutique</a>
+      <a href="inscription.html" class="cta">S'inscrire</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#" aria-label="Instagram">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Discord">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09A.1.1 0 0 0 9 4c-1.5.26-2.93.71-4.27 1.33a.07.07 0 0 0-.03.03C2.07 9.33 1.33 13.21 1.69 17.03a.1.1 0 0 0 .04.07c1.8 1.32 3.54 2.12 5.25 2.65a.1.1 0 0 0 .11-.04c.4-.55.76-1.13 1.08-1.75a.09.09 0 0 0-.05-.13c-.57-.22-1.11-.48-1.64-.78a.1.1 0 0 1-.01-.16c.11-.08.22-.17.32-.25a.1.1 0 0 1 .1-.01c3.44 1.57 7.16 1.57 10.56 0a.09.09 0 0 1 .1.01c.11.09.21.17.32.26a.1.1 0 0 1-.01.16c-.52.31-1.07.56-1.64.78a.09.09 0 0 0-.05.13c.33.62.69 1.2 1.08 1.75.03.04.08.06.12.04 1.72-.53 3.45-1.33 5.25-2.65a.1.1 0 0 0 .04-.07c.43-4.41-.72-8.26-3.01-11.67a.08.08 0 0 0-.04-.03ZM8.52 14.7c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
+      </a>
+      <a href="#" class="login">Se connecter</a>
+    </div>
+  </header>
+
+  <section class="shell inscription-wrap">
+
+    <div class="breadcrumb">
+      <a href="#">Tournois</a><span class="sep">▸</span>
+      <a href="#">Rush Five</a><span class="sep">▸</span>
+      <span class="here">Inscription</span>
+    </div>
+
+    <div class="ins-grid">
+
+      <!-- LEFT: Tournament card -->
+      <aside class="tourney-card" aria-label="Détails du tournoi">
+        <div class="tourney-hero">
+          <span class="lamp"></span><span class="lamp"></span><span class="lamp"></span>
+          <div class="stadium"></div>
+          <h2>RUSH FIVE</h2>
+        </div>
+        <div class="tourney-body">
+          <div class="mode-tiles">
+            <div class="mode-tile active">
+              <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/></svg></div>
+              FOOT 5v5
+            </div>
+            <div class="mode-tile">
+              <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8h10a4 4 0 0 1 4 4v2a3 3 0 0 1-5.6 1.5L14 14h-4l-1.4 1.5A3 3 0 0 1 3 14v-2a4 4 0 0 1 4-4Z"/></svg></div>
+              FC 3v2
+            </div>
+            <div class="mode-tile">
+              <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 16h16v-3l-2-4H6l-2 4z"/></svg></div>
+              CAR-BALL
+            </div>
+          </div>
+          <div class="chip-row">
+            <span class="chip">Dimanche 13 Juillet</span>
+            <span class="chip">14:00</span>
+            <span class="chip">St-Denis</span>
+          </div>
+          <h3 class="section-title">Votre équipe</h3>
+          <ul class="detail-list">
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="10" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M13 19c0-2 1.8-3.5 4-3.5s4 1.5 4 3.5"/></svg>
+              <span class="k">Équipe</span>
+              <span class="v" id="sidebar-equipe-nom">—</span>
+            </li>
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 18 5 7l5 3 2-5 2 5 5-3 2 11H3Zm0 2h18v2H3z"/></svg>
+              <span class="k">Mode</span>
+              <span class="v" id="sidebar-mode">FOOT 5v5</span>
+            </li>
+            <li>
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+              <span class="k">Joueurs</span>
+              <span class="v"><span id="sidebar-joueurs-count">0</span> / 5</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- CENTER: Form joueurs -->
+      <main class="ins-main">
+        <h1 class="ins-title">Vos <span class="accent">joueurs</span></h1>
+        <p class="ins-sub">Renseignez les 5 membres de votre équipe. <span class="em">Le joueur 1 est automatiquement capitaine.</span></p>
+
+        <div class="stepper" role="progressbar" aria-valuenow="2" aria-valuemax="4">
+          <div class="s done">
+            <span class="num">✓</span><span class="lbl">Équipe</span>
+          </div>
+          <div class="bar done-bar"></div>
+          <div class="s active">
+            <span class="num">2</span><span class="lbl">Joueurs</span>
+          </div>
+          <div class="bar"></div>
+          <div class="s">
+            <span class="num">3</span><span class="lbl">Paiement</span>
+          </div>
+          <div class="bar"></div>
+          <div class="s">
+            <span class="num">4</span><span class="lbl">Confirmation</span>
+          </div>
+        </div>
+
+        <!-- Onglets joueurs -->
+        <div class="player-tabs" id="player-tabs">
+          <button class="ptab active" data-player="0">Joueur 1 — Cap.</button>
+          <button class="ptab" data-player="1">Joueur 2</button>
+          <button class="ptab" data-player="2">Joueur 3</button>
+          <button class="ptab" data-player="3">Joueur 4</button>
+          <button class="ptab" data-player="4">Joueur 5</button>
+        </div>
+
+        <form id="joueurs-form" novalidate>
+
+          <!-- 5 panneaux joueurs -->
+          <div id="panels-container">
+            <!-- Généré par JS -->
+          </div>
+
+          <div style="display:flex; align-items:center; gap:14px; margin-top:24px;">
+            <button type="button" onclick="history.back()" style="
+              padding:12px 20px; border-radius:8px; border:1px solid #3a3a42;
+              color:#8a8a93; background:transparent; font-family:'Oswald',sans-serif;
+              font-size:13px; font-weight:600; letter-spacing:.06em; cursor:pointer;
+              display:flex; align-items:center; gap:8px;
+            ">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+              Retour
+            </button>
+            <button class="continue-btn" type="submit" style="flex:1;">
+              Continuer vers le paiement
+              <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+
+          <div class="secure-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+            Données protégées — utilisées uniquement pour le tournoi
+          </div>
+        </form>
+      </main>
+
+      <!-- RIGHT: Summary -->
+      <aside class="summary">
+        <div class="summary-card">
+          <h3 class="summary-title">Résumé de l'inscription</h3>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div>
+            <div><div class="k">Tournoi</div><div class="v">Rush Five — FOOT 5v5</div></div>
+          </div>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <div><div class="k">Date</div><div class="v">Dimanche 13 Juillet</div></div>
+          </div>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4h10v3a5 5 0 0 1-10 0V4ZM5 5H3v2a3 3 0 0 0 3 3M19 5h2v2a3 3 0 0 1-3 3M9 17h6v3H9z"/></svg></div>
+            <div><div class="k">Cashprize</div><div class="v big">1000€ à partager</div></div>
+          </div>
+          <div class="summary-row">
+            <div class="ico-tile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="10" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5"/></svg></div>
+            <div><div class="k">Équipe</div><div class="v" id="sum-equipe">—</div></div>
+          </div>
+        </div>
+
+        <div class="countdown-card">
+          <div class="top">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v5l3 2M9 2h6"/></svg>
+            Fin des inscriptions dans :
+          </div>
+          <div class="countdown-units">
+            <div class="u" id="cd-d">02<span class="small">j</span></div>
+            <span class="colon">:</span>
+            <div class="u" id="cd-h">14<span class="small">h</span></div>
+            <span class="colon">:</span>
+            <div class="u" id="cd-m">32<span class="small">m</span></div>
+          </div>
+        </div>
+
+        <div class="help-card">
+          <div class="ico-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 3-3 3M12 17h.01"/></svg></div>
+          <h4>Besoin d'aide ?</h4>
+          <p>Consultez notre FAQ ou contactez le support</p>
+          <a href="#" class="btn ghost">Voir la FAQ</a>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="foot-bottom">
+        <div>© 2026 RUSH XP. Tous droits réservés.</div>
+        <div style="display:flex; gap:18px;">
+          <a href="#">Mentions légales</a>
+          <a href="#">Politique de confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // ── Récupérer les données de l'étape 1 ──────────────────────────────────────
+  const inscData = JSON.parse(sessionStorage.getItem('rushfive_inscription') || '{}');
+  if (!inscData.equipe?.nom) {
+    // Si on arrive sans données d'étape 1, on renvoie
+    window.location.href = 'inscription.html';
+  }
+
+  document.getElementById('sidebar-equipe-nom').textContent = inscData.equipe?.nom || '—';
+  document.getElementById('sidebar-mode').textContent        = inscData.equipe?.mode || 'FOOT 5v5';
+  document.getElementById('sum-equipe').textContent          = inscData.equipe?.nom || '—';
+
+  // ── Champs par joueur ────────────────────────────────────────────────────────
+  const NB_JOUEURS = 5;
+  const joueurs    = inscData.joueurs || Array(NB_JOUEURS).fill(null).map(() => ({}));
+  let   activePanel = 0;
+
+  function renderPanels() {
+    const container = document.getElementById('panels-container');
+    container.innerHTML = '';
+
+    for (let i = 0; i < NB_JOUEURS; i++) {
+      const j    = joueurs[i] || {};
+      const isCap = i === 0;
+      const div  = document.createElement('div');
+      div.className = 'player-panel' + (i === activePanel ? ' active' : '');
+      div.id = `panel-${i}`;
+
+      div.innerHTML = `
+        <div class="player-panel-header">
+          <div class="player-num${j.prenom ? ' done-num' : ''}" id="pnum-${i}">${i+1}</div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif; font-size:16px; font-weight:600;">
+              ${isCap ? 'Joueur 1 — Capitaine' : `Joueur ${i+1}`}
+            </div>
+            ${isCap ? '<div class="captain-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18 5 7l5 3 2-5 2 5 5-3 2 11H3Zm0 2h18v2H3z"/></svg> Capitaine d\'équipe</div>' : ''}
+          </div>
+        </div>
+        <div class="field-grid-2">
+          <div>
+            <div class="lab">Prénom <span style="color:#ef2434">*</span></div>
+            <input class="field-input" type="text" name="prenom_${i}" value="${j.prenom||''}" placeholder="Ex : Lucas" required />
+          </div>
+          <div>
+            <div class="lab">Nom <span style="color:#ef2434">*</span></div>
+            <input class="field-input" type="text" name="nom_${i}" value="${j.nom||''}" placeholder="Ex : Martin" required />
+          </div>
+        </div>
+        <div class="field-grid-2">
+          <div>
+            <div class="lab">Pseudo / Surnom <span style="color:#ef2434">*</span></div>
+            <input class="field-input" type="text" name="pseudo_${i}" value="${j.pseudo||''}" placeholder="Ex : Zerox" required />
+          </div>
+          <div>
+            <div class="lab">Téléphone <span style="color:#ef2434">*</span></div>
+            <input class="field-input" type="tel" name="telephone_${i}" value="${j.telephone||''}" placeholder="06 XX XX XX XX" required />
+          </div>
+        </div>
+        <div class="field-grid-1">
+          <div class="lab">Email <span style="color:#ef2434">*</span></div>
+          <input class="field-input" type="email" name="email_${i}" value="${j.email||''}" placeholder="joueur@email.com" required />
+        </div>
+      `;
+      container.appendChild(div);
+    }
+  }
+
+  function switchTab(index) {
+    activePanel = index;
+    document.querySelectorAll('.ptab').forEach((t, i) => {
+      t.className = 'ptab' + (i === index ? ' active' : (joueurs[i]?.prenom ? ' done' : ''));
+    });
+    document.querySelectorAll('.player-panel').forEach((p, i) => {
+      p.className = 'player-panel' + (i === index ? ' active' : '');
+    });
+  }
+
+  function saveCurrentPanel(index) {
+    const j = joueurs[index] || {};
+    j.prenom    = document.querySelector(`[name="prenom_${index}"]`)?.value || '';
+    j.nom       = document.querySelector(`[name="nom_${index}"]`)?.value || '';
+    j.pseudo    = document.querySelector(`[name="pseudo_${index}"]`)?.value || '';
+    j.telephone = document.querySelector(`[name="telephone_${index}"]`)?.value || '';
+    j.email     = document.querySelector(`[name="email_${index}"]`)?.value || '';
+    joueurs[index] = j;
+
+    // Update counter
+    const filled = joueurs.filter(j => j?.prenom).length;
+    document.getElementById('sidebar-joueurs-count').textContent = filled;
+
+    // Update tab style
+    const tabs = document.querySelectorAll('.ptab');
+    tabs[index].className = 'ptab' + (index === activePanel ? ' active' : '') + (j.prenom ? ' done' : '');
+    document.getElementById(`pnum-${index}`)?.classList.toggle('done-num', !!j.prenom);
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────────
+  renderPanels();
+
+  document.getElementById('player-tabs').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-player]');
+    if (!btn) return;
+    saveCurrentPanel(activePanel);
+    renderPanels();
+    switchTab(parseInt(btn.dataset.player));
+  });
+
+  // Auto-save on input change
+  document.getElementById('panels-container').addEventListener('input', () => {
+    saveCurrentPanel(activePanel);
+  });
+
+  // ── Submit ───────────────────────────────────────────────────────────────────
+  document.getElementById('joueurs-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveCurrentPanel(activePanel);
+
+    // Valider tous les joueurs
+    const errors = [];
+    for (let i = 0; i < NB_JOUEURS; i++) {
+      const j = joueurs[i] || {};
+      if (!j.prenom || !j.nom || !j.pseudo || !j.email || !j.telephone) {
+        errors.push(`Joueur ${i+1} : informations incomplètes`);
+      }
+      if (j.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(j.email)) {
+        errors.push(`Joueur ${i+1} : email invalide`);
+      }
+    }
+
+    if (errors.length) {
+      alert('Veuillez corriger les erreurs :\n\n' + errors.join('\n'));
+      // Aller sur le premier joueur incomplet
+      const firstError = errors[0].match(/Joueur (\d+)/);
+      if (firstError) switchTab(parseInt(firstError[1]) - 1);
+      return;
+    }
+
+    // Sauvegarder en sessionStorage
+    inscData.joueurs = joueurs;
+    sessionStorage.setItem('rushfive_inscription', JSON.stringify(inscData));
+
+    window.location.href = 'inscription-3.html';
+  });
+
+  // ── Countdown ────────────────────────────────────────────────────────────────
+  (function() {
+    let d=2,h=14,m=32,s=0;
+    const dEl=document.getElementById('cd-d'),hEl=document.getElementById('cd-h'),mEl=document.getElementById('cd-m');
+    const pad=n=>String(n).padStart(2,'0');
+    setInterval(()=>{
+      s--;
+      if(s<0){s=59;m--;} if(m<0){m=59;h--;} if(h<0){h=23;d--;} if(d<0){d=h=m=s=0;}
+      dEl.innerHTML=pad(d)+'<span class="small">j</span>';
+      hEl.innerHTML=pad(h)+'<span class="small">h</span>';
+      mEl.innerHTML=pad(m)+'<span class="small">m</span>';
+    },1000);
+  })();
+</script>
+</body>
+</html>

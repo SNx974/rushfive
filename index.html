@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RUSH XP — Tournois compétitifs FC, Rocket League & Foot 5v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<script src="assets/image-slot.js"></script>
+</head>
+<body>
+
+  <!-- ============================================
+       NAV
+       ============================================ -->
+  <header class="shell nav" data-screen-label="01 Accueil">
+    <a class="nav-logo" href="index.html" aria-label="RUSH XP">
+      <img src="assets/rushxp-logo.png" alt="RUSH XP" />
+    </a>
+
+    <nav class="nav-menu" aria-label="Navigation principale">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="#tournois">Tournois</a>
+      <a href="#classements">Classements</a>
+      <a href="#communaute">Communauté</a>
+      <a href="#boutique">Boutique</a>
+      <a href="inscription.html" class="cta">S'inscrire</a>
+    </nav>
+
+    <div class="nav-right">
+      <!-- Instagram -->
+      <a href="#" aria-label="Instagram">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      </a>
+      <!-- Discord -->
+      <a href="#" aria-label="Discord">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09A.1.1 0 0 0 9 4c-1.5.26-2.93.71-4.27 1.33a.07.07 0 0 0-.03.03C2.07 9.33 1.33 13.21 1.69 17.03a.1.1 0 0 0 .04.07c1.8 1.32 3.54 2.12 5.25 2.65a.1.1 0 0 0 .11-.04c.4-.55.76-1.13 1.08-1.75a.09.09 0 0 0-.05-.13c-.57-.22-1.11-.48-1.64-.78a.1.1 0 0 1-.01-.16c.11-.08.22-.17.32-.25a.1.1 0 0 1 .1-.01c3.44 1.57 7.16 1.57 10.56 0a.09.09 0 0 1 .1.01c.11.09.21.17.32.26a.1.1 0 0 1-.01.16c-.52.31-1.07.56-1.64.78a.09.09 0 0 0-.05.13c.33.62.69 1.2 1.08 1.75.03.04.08.06.12.04 1.72-.53 3.45-1.33 5.25-2.65a.1.1 0 0 0 .04-.07c.43-4.41-.72-8.26-3.01-11.67a.08.08 0 0 0-.04-.03ZM8.52 14.7c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/>
+        </svg>
+      </a>
+      <!-- X -->
+      <a href="#" aria-label="X">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2H21l-6.55 7.49L22 22h-6.79l-4.74-6.12L4.8 22H2l7.01-8.02L2 2h6.91l4.3 5.6L18.244 2Zm-1.19 18.31h1.77L7.06 3.6H5.16l11.894 16.71Z"/>
+        </svg>
+      </a>
+      <a href="#" class="login">Se connecter</a>
+    </div>
+  </header>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="shell hero" data-screen-label="01 Accueil — Hero">
+    <div class="hero-stage">
+      <!-- Image slot for the user's stadium key art -->
+      <image-slot
+        class="hero-bg"
+        id="hero-stadium"
+        shape="rect"
+        radius="24"
+        placeholder="STADIUM KEY ART — drop your hero image">
+      </image-slot>
+
+      <!-- CSS fallback "stadium" if no image dropped -->
+      <div class="hero-glow"></div>
+      <div class="field" aria-hidden="true">
+        <div class="field-half left">
+          <div class="field-line"></div>
+          <div class="field-center"></div>
+        </div>
+        <div class="field-half right">
+          <div class="field-line"></div>
+          <div class="field-center"></div>
+        </div>
+      </div>
+
+      <!-- Side game tags (text placeholders for branded game logos) -->
+      <div class="game-tag left">
+        <span class="badge">MODE FOOT</span>
+        <span class="name">F<span class="accent">C</span></span>
+      </div>
+      <div class="game-tag right">
+        <span class="badge">MODE CAR-BALL</span>
+        <span class="name">R<span class="accent">L</span></span>
+      </div>
+
+      <!-- Hero text -->
+      <div class="hero-content">
+        <div class="hero-numeric">5</div>
+        <h1 class="hero-title">Rush Five</h1>
+        <div class="hero-subtitle">
+          Compétitions 3v3
+          <span class="dot"></span>
+          Cashprize
+          <span class="dot"></span>
+          Communauté
+        </div>
+        <div class="hero-cta">
+          <a href="inscription.html" class="btn">Rejoins l'arène</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         FEATURE CARDS
+         ============================================ -->
+    <div class="features">
+
+      <!-- Card 1 — Flexibility -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3Z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </div>
+          <h3 class="card-title">Votre flexibilité,<br/>votre choix</h3>
+        </div>
+        <p class="card-body">
+          Participez à votre rythme, un tournoi unique RUSH FIVE.
+          Plus de flexibilité, plus de plaisir.
+        </p>
+        <div class="toggle-row">
+          <div class="toggle-pill">
+            <div class="toggle on" role="switch" aria-checked="true"></div>
+            <div class="toggle-label">FOOT 5v5</div>
+          </div>
+          <div class="toggle-pill">
+            <div class="toggle on" role="switch" aria-checked="true"></div>
+            <div class="toggle-label">FC 2v2</div>
+          </div>
+          <div class="toggle-pill">
+            <div class="toggle" role="switch" aria-checked="false"></div>
+            <div class="toggle-label">CAR-BALL</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 — Prize -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="9" cy="8" r="3.5"/>
+              <circle cx="16.5" cy="9.5" r="2.8"/>
+              <path d="M3 19c.5-3 3-5 6-5s5.5 2 6 5"/>
+              <path d="M13.5 19c.4-2 2-3.5 4-3.5s3.6 1.5 4 3.5"/>
+            </svg>
+          </div>
+          <h3 class="card-title">La course aux<br/>récompenses</h3>
+        </div>
+        <p class="card-body">
+          1000€ à partager + Trophées exclusifs + Médailles.
+          Ne ratez pas les main event !
+        </p>
+        <div class="prize">
+          <div class="prize-icons" aria-hidden="true">
+            <!-- Trophy -->
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+              <path d="M7 4h10v3a5 5 0 0 1-10 0V4Z" fill="#FFB661" stroke="#FF7A18" stroke-width="1.4"/>
+              <path d="M5 5H3v2a3 3 0 0 0 3 3M19 5h2v2a3 3 0 0 1-3 3" stroke="#FF7A18" stroke-width="1.4" fill="none"/>
+              <path d="M10 13h4v3h-4z" fill="#FF9347"/>
+              <path d="M8 17h8v2H8z" fill="#FF7A18"/>
+            </svg>
+            <!-- Cash bundle -->
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="7" width="18" height="11" rx="2" fill="#1f4d2a" stroke="#39a55a" stroke-width="1.4"/>
+              <circle cx="12" cy="12.5" r="3" fill="#39a55a"/>
+              <text x="12" y="14" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="4" fill="#0a0a0a">€</text>
+            </svg>
+            <!-- Medal -->
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+              <path d="M8 2 6 6l4 5h4l4-5-2-4z" fill="#aa7bd6" stroke="#7e54aa" stroke-width="1.2"/>
+              <circle cx="12" cy="15" r="5" fill="#d6b06a" stroke="#9a7a3f" stroke-width="1.2"/>
+              <circle cx="12" cy="15" r="2.5" fill="#fff3d6"/>
+            </svg>
+          </div>
+          <div class="prize-amount">1000€ à partager</div>
+        </div>
+      </article>
+
+      <!-- Card 3 — Modes -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 7h16v2H4zM4 11h16v2H4zM4 15h16v2H4z"/>
+              <circle cx="6" cy="8" r="1" fill="currentColor"/>
+              <circle cx="6" cy="12" r="1" fill="currentColor"/>
+              <circle cx="6" cy="16" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Le championnat :<br/>3 modes uniques</h3>
+        </div>
+        <p class="card-body">
+          FOOT 5v5 (Terrain réel) | FC 3v2 (Console)<br/>
+          CAR-BALL 2v2 (PC/Console)
+        </p>
+        <div class="modes">
+          <div class="mode">
+            <!-- soccer ball -->
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v3l-5 4 2 6 6 0 2-6-5-4z" fill="currentColor" fill-opacity="0.15"/>
+            </svg>
+            <div class="name">FOOT 5v5</div>
+            <div class="sub">(Terrain réel)</div>
+          </div>
+          <div class="mode">
+            <!-- controller -->
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M7 8h10a4 4 0 0 1 4 4v2a3 3 0 0 1-5.6 1.5L14 14h-4l-1.4 1.5A3 3 0 0 1 3 14v-2a4 4 0 0 1 4-4Z"/>
+              <path d="M8 11v3M6.5 12.5h3"/>
+              <circle cx="16" cy="12" r="0.6" fill="currentColor"/>
+              <circle cx="17.5" cy="13.5" r="0.6" fill="currentColor"/>
+            </svg>
+            <div class="name">FC 3v2</div>
+            <div class="sub">(Console)</div>
+          </div>
+          <div class="mode">
+            <!-- car -->
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4 16h16v-3l-2-4H6l-2 4z"/>
+              <circle cx="8" cy="17" r="1.6" fill="currentColor"/>
+              <circle cx="16" cy="17" r="1.6" fill="currentColor"/>
+            </svg>
+            <div class="name">CAR-BALL 2v2</div>
+            <div class="sub">(PC/Console)</div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       WHY PARTICIPATE
+       ============================================ -->
+  <section class="shell why" id="communaute" data-screen-label="01 Accueil — Pourquoi participer">
+    <h2 class="why-title">POURQUOI PARTICIPER ?</h2>
+
+    <div class="why-grid">
+
+      <div class="why-cell">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M6 18a4 4 0 0 1-1-7.9A6 6 0 0 1 16.5 8 5 5 0 0 1 19 18H6Z"/>
+          <circle cx="12" cy="14" r="2"/>
+          <path d="M12 14v-2M12 18v-1"/>
+        </svg>
+        <h4>Plateforme<br/>SaaS unique</h4>
+        <p>Une expérience fluide<br/>et sécurisée</p>
+      </div>
+
+      <div class="why-cell">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M8 3h8l-1 6h-6z"/>
+          <circle cx="12" cy="15" r="5"/>
+          <path d="M12 12v6M9.5 15h5"/>
+        </svg>
+        <h4>Récompenses<br/>exclusives</h4>
+        <p>Des lots incroyables<br/>à chaque saison</p>
+      </div>
+
+      <!-- World map placeholder -->
+      <div class="map-wrap">
+        <svg class="map" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <pattern id="dots" width="4" height="4" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.8" fill="#3a3a40" />
+            </pattern>
+          </defs>
+          <rect width="360" height="180" fill="#0a0a0c"/>
+          <!-- crude continents in dotted style -->
+          <path d="M20,60 Q40,40 70,45 T120,55 Q140,75 100,90 T50,100 Q25,85 20,60Z" fill="url(#dots)"/>
+          <path d="M140,70 Q170,45 210,55 T250,60 Q260,80 240,95 T180,110 Q150,100 140,70Z" fill="url(#dots)"/>
+          <path d="M260,55 Q290,40 320,55 T345,90 Q330,110 300,105 T270,90 Q255,75 260,55Z" fill="url(#dots)"/>
+          <path d="M180,120 Q200,115 215,130 T210,160 Q190,170 175,155 T180,120Z" fill="url(#dots)"/>
+          <path d="M280,130 Q300,125 315,135 T310,155 Q295,165 285,155 T280,130Z" fill="url(#dots)"/>
+
+          <!-- glow pins -->
+          <g fill="#ff7a18">
+            <circle cx="70" cy="70"  r="2.2"><animate attributeName="r" values="2;3.5;2" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="180" cy="80" r="2.2"><animate attributeName="r" values="2;3.5;2" dur="2.4s" repeatCount="indefinite"/></circle>
+            <circle cx="240" cy="65" r="2.2"><animate attributeName="r" values="2;3.5;2" dur="2.1s" repeatCount="indefinite"/></circle>
+            <circle cx="300" cy="80" r="2.2"><animate attributeName="r" values="2;3.5;2" dur="2.6s" repeatCount="indefinite"/></circle>
+            <circle cx="200" cy="140" r="2.2"><animate attributeName="r" values="2;3.5;2" dur="2.2s" repeatCount="indefinite"/></circle>
+          </g>
+        </svg>
+      </div>
+
+      <div class="why-cell">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="9" cy="9" r="3.2"/>
+          <circle cx="16.5" cy="10.5" r="2.6"/>
+          <path d="M3 19c.5-3 3-5 6-5s5.5 2 6 5"/>
+          <path d="M13.5 19c.4-2 2-3.5 4-3.5s3.6 1.5 4 3.5"/>
+        </svg>
+        <h4>Communauté<br/>active</h4>
+        <p>Rejoins une communauté<br/>de passionnés</p>
+      </div>
+
+      <div class="why-cell">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3" y="5" width="18" height="16" rx="2"/>
+          <path d="M3 9h18M8 3v4M16 3v4"/>
+          <circle cx="8" cy="14" r="1" fill="currentColor"/>
+          <circle cx="12" cy="14" r="1" fill="currentColor"/>
+          <circle cx="16" cy="14" r="1" fill="currentColor"/>
+        </svg>
+        <h4>Tournois<br/>réguliers</h4>
+        <p>Des événements<br/>toute l'année</p>
+      </div>
+
+      <!-- Signup form -->
+      <form class="signup" onsubmit="event.preventDefault(); window.location='inscription.html';">
+        <h3>Crée ton compte</h3>
+        <input class="field-input" type="email" placeholder="Email" required />
+        <input class="field-input" type="text" placeholder="Nom d'utilisateur" required />
+        <button class="btn full" type="submit">S'inscrire maintenant</button>
+        <div class="legend">Deviens une légende RUSH XP.</div>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer" id="boutique">
+    <div class="shell">
+      <div class="footer-row">
+
+        <div>
+          <div class="partner-title">NOS PARTENAIRES</div>
+          <div class="partner-logos">
+            <div class="partner-chip">OCORNER</div>
+            <div class="partner-chip">FOODCO</div>
+            <div class="partner-chip">EASYGYM</div>
+          </div>
+        </div>
+
+        <div class="foot-col">
+          <h5>RUSH XP</h5>
+          <ul>
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Devenir partenaire</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h5>COMPÉTITIONS</h5>
+          <ul>
+            <li><a href="#">Tournois en direct</a></li>
+            <li><a href="#">Classements</a></li>
+            <li><a href="#">Règlement</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h5>COMMUNAUTÉ</h5>
+          <ul>
+            <li><a href="#">Événements</a></li>
+            <li><a href="#">Discord</a></li>
+            <li><a href="#">Actualités</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h5>BOUTIQUE</h5>
+          <ul>
+            <li><a href="#">Vêtements</a></li>
+            <li><a href="#">Accessoires</a></li>
+            <li><a href="#">Cartes cadeaux</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h5>SUIVEZ-NOUS</h5>
+          <div class="socials-foot">
+            <a href="#" aria-label="Instagram">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="Discord">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09A.1.1 0 0 0 9 4c-1.5.26-2.93.71-4.27 1.33a.07.07 0 0 0-.03.03C2.07 9.33 1.33 13.21 1.69 17.03a.1.1 0 0 0 .04.07c1.8 1.32 3.54 2.12 5.25 2.65a.1.1 0 0 0 .11-.04c.4-.55.76-1.13 1.08-1.75a.09.09 0 0 0-.05-.13c-.57-.22-1.11-.48-1.64-.78a.1.1 0 0 1-.01-.16c.11-.08.22-.17.32-.25a.1.1 0 0 1 .1-.01c3.44 1.57 7.16 1.57 10.56 0a.09.09 0 0 1 .1.01c.11.09.21.17.32.26a.1.1 0 0 1-.01.16c-.52.31-1.07.56-1.64.78a.09.09 0 0 0-.05.13c.33.62.69 1.2 1.08 1.75.03.04.08.06.12.04 1.72-.53 3.45-1.33 5.25-2.65a.1.1 0 0 0 .04-.07c.43-4.41-.72-8.26-3.01-11.67a.08.08 0 0 0-.04-.03ZM8.52 14.7c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12Zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.91.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12Z"/></svg>
+            </a>
+            <a href="#" aria-label="X">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21l-6.55 7.49L22 22h-6.79l-4.74-6.12L4.8 22H2l7.01-8.02L2 2h6.91l4.3 5.6L18.244 2Zm-1.19 18.31h1.77L7.06 3.6H5.16l11.894 16.71Z"/></svg>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8C22 15.2 22 12 22 12s0-3.2-.4-4.8ZM10 15V9l5 3-5 3Z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot-bottom">
+        <div>© 2026 RUSH XP. Tous droits réservés.</div>
+        <div style="display:flex; gap:18px;">
+          <a href="#">Mentions légales</a>
+          <a href="#">Politique de confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple toggle interaction on feature card 1
+    document.querySelectorAll('.toggle').forEach(t => {
+      t.addEventListener('click', () => t.classList.toggle('on'));
+    });
+  </script>
+</body>
+</html>
